@@ -18,6 +18,7 @@
   
   <properties>
     <log4j.version>2.5</log4j.version>
+    <h2.version>1.4.191</h2.version>
   </properties>
   
   <dependencies>
@@ -36,5 +37,10 @@
 	  <artifactId>log4j-slf4j-impl</artifactId>
 	  <version>${log4j.version}</version>
 	</dependency>
+	<dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>${h2.version}</version>
+    </dependency>
   </dependencies>
 </project>

@@ -4,13 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-/**
- * Created by Andreea on 29/11/2014.
- */
 public abstract class AbstractDaoManager {
 	
     /**
-     * Object DataSource which could be used in all the DAOs
+     * Object ConnectionManager which could be used in all the DAOs
      */
     protected ConnectionManager cm = new ConnectionManager();
     protected Connection connection = cm.openConnection();

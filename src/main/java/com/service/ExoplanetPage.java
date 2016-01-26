@@ -18,18 +18,12 @@ public class ExoplanetPage implements IExoplanetPage {
 	private static final By showAllResults = By.xpath("/html/body/div[2]/div[2]/div[3]/div/div[3]/label/select/option[4]");
 	private static final By searchTextFieldLocator = By.xpath("/html/body/div[2]/div[2]/div[3]/div/div[4]/label/input");
 	private static final By planetCountLocator = By.xpath("/html/body/div[2]/div[2]/p/span[2]");
+	private static final By webDataLocator = By.xpath("//td");
 	private WebDriver driver;
 
 	public List<WebElement> exoplanetListSearch(String searchText) {
 		driver = new FirefoxDriver();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		driver.navigate().to(exoplanetCatalog);
-		driver.findElement(searchTextFieldLocator).clear();
-		driver.findElement(searchTextFieldLocator).sendKeys(searchText);
-		return null;
-	}
-
-	public List<Exoplanet> exoplanetWholeList() {
 		driver = new FirefoxDriver();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.navigate().to(exoplanetCatalog);
@@ -42,7 +36,15 @@ public class ExoplanetPage implements IExoplanetPage {
 				}
 			}
 		}
+		int pCount = Integer.valueOf(planetCount);
 		driver.findElement(showAllResults).click();
+		driver.findElement(searchTextFieldLocator).clear();
+		driver.findElement(searchTextFieldLocator).sendKeys(searchText);
+		return exoplanetWebData = driver.findElements(webDataLocator);
+	}
+
+	public List<Exoplanet> exoplanetWholeList() {
+
 		return null;
 	}
 	

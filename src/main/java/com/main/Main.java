@@ -1,9 +1,14 @@
 package com.main;
 	
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebElement;
+
+import com.service.ExoplanetPage;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -42,6 +47,13 @@ public class Main extends Application {
 //			// TODO Auto-generated catch block
 //			ese.printStackTrace();
 //		}
+		
+		ExoplanetPage page = new ExoplanetPage();
+		List<WebElement> list = new ArrayList<WebElement>();
+		list = page.exoplanetListSearch("");
+		for(int i = 0; i < list.size(); i++){
+			logger.info(list.get(i).toString());
+		}
 		launch(args);
 		logger.info("HelloWorld");
 	}

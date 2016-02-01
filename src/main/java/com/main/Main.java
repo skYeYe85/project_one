@@ -1,16 +1,15 @@
 package com.main;
 	
 import java.text.ParseException;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.dto.Exoplanet;
-import com.exception.ExoplanetServiceException;
-import com.service.ExoplanetPage;
 import com.service.ExoplanetService;
-import com.service.IExoplanetPage;
 import com.service.IExoplanetService;
 
 import javafx.application.Application;
@@ -21,6 +20,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	private static final Logger logger = LogManager.getLogger(Main.class);
+	private static ApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -45,17 +45,17 @@ public class Main extends Application {
 		IExoplanetService ies = new ExoplanetService();
 
 		
-		IExoplanetPage page = new ExoplanetPage();
-		List<Exoplanet> list;
-		list = page.exoplanetWholeList();
-		for(int i = 0; i < list.size(); i++){
-			try {
-				e = ies.create(list.get(i));
-			} catch (ExoplanetServiceException ese) {
-				// TODO Auto-generated catch block
-				ese.printStackTrace();
-			}
-		}
+//		IExoplanetPage page = new ExoplanetPage();
+//		List<Exoplanet> list;
+//		list = page.exoplanetWholeList();
+//		for(int i = 0; i < list.size(); i++){
+//			try {
+//				e = ies.create(list.get(i));
+//			} catch (ExoplanetServiceException ese) {
+//				// TODO Auto-generated catch block
+//				ese.printStackTrace();
+//			}
+//		}
 		launch(args);
 		logger.info("HelloWorld");
 	}

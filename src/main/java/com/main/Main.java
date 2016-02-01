@@ -1,14 +1,17 @@
 package com.main;
 	
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.WebElement;
 
+import com.dto.Exoplanet;
+import com.exception.ExoplanetServiceException;
 import com.service.ExoplanetPage;
+import com.service.ExoplanetService;
+import com.service.IExoplanetPage;
+import com.service.IExoplanetService;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -38,21 +41,20 @@ public class Main extends Application {
 //		Date parsed = sdf.parse("2014-10-01");
 //		java.sql.Date date = new java.sql.Date(parsed.getTime());
 //		
-//		Exoplanet e = new Exoplanet(null, "Gliese 876 d", 0.017, 0.0, 1.94, 0.02080665,
-//				0.081,50.0, 0.004427, 2005, date);
-//		IExoplanetService ies = new ExoplanetService();
-//		try {
-//			e = ies.create(e);
-//		} catch (ExoplanetServiceException ese) {
-//			// TODO Auto-generated catch block
-//			ese.printStackTrace();
-//		}
+		Exoplanet e = new Exoplanet();
+		IExoplanetService ies = new ExoplanetService();
+
 		
-		ExoplanetPage page = new ExoplanetPage();
-		List<WebElement> list = new ArrayList<WebElement>();
-		list = page.exoplanetListSearch("");
+		IExoplanetPage page = new ExoplanetPage();
+		List<Exoplanet> list;
+		list = page.exoplanetWholeList();
 		for(int i = 0; i < list.size(); i++){
-			logger.info(list.get(i).toString());
+			try {
+				e = ies.create(list.get(i));
+			} catch (ExoplanetServiceException ese) {
+				// TODO Auto-generated catch block
+				ese.printStackTrace();
+			}
 		}
 		launch(args);
 		logger.info("HelloWorld");

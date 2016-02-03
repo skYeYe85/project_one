@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.dao.ExoplanetDao;
 import com.dao.IExoplanetDao;
 import com.dto.Exoplanet;
 import com.exception.ExoplanetPersistenceException;
@@ -14,7 +14,8 @@ import com.exception.ExoplanetServiceException;
 public class ExoplanetService implements IExoplanetService {
 
 	private static final Logger logger = LogManager.getLogger(ExoplanetService.class);
-	private IExoplanetDao exoplanetDao = new ExoplanetDao();
+	@Autowired
+	private IExoplanetDao exoplanetDao;
 	
 	public Exoplanet create(Exoplanet e) throws ExoplanetServiceException {
 		checkExoplanetValidationService(e);

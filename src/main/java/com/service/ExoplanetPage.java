@@ -32,20 +32,8 @@ public class ExoplanetPage implements IExoplanetPage {
 	private static final By planetCountLocator = By.xpath("/html/body/div[2]/div[2]/p/span[2]");
 	private static final By webDataLocator = By.xpath("//td");
 
-	public List<WebElement> exoplanetListSearch(String searchText) {
-		exoplanetWebData = new ArrayList<WebElement>();
-		driver = new FirefoxDriver();
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		driver.navigate().to(exoplanetCatalog);
-		driver.findElement(showAllResults).click();
-		proceedWhenVisible(driver, 15);
-		driver.findElement(searchTextFieldLocator).clear();
-		driver.findElement(searchTextFieldLocator).sendKeys(searchText);
-		return exoplanetWebData = driver.findElements(webDataLocator);
-	}
-
-	public List<Exoplanet> exoplanetWholeList() throws ParseException {
-		exoplanetWebData = exoplanetListSearch("");
+	public List<Exoplanet> exoplanetSearchList(String searchText) throws ParseException {
+		exoplanetWebData = exoplanetListSearch(searchText);
 		exoplanetList = new ArrayList<Exoplanet>();
 		Double parameter; // all-Planet-Double Parameters
 		Integer entdeckung;
@@ -79,6 +67,18 @@ public class ExoplanetPage implements IExoplanetPage {
 		return exoplanetList;
 	}
 
+	private List<WebElement> exoplanetListSearch(String searchText) {
+		exoplanetWebData = new ArrayList<WebElement>();
+		driver = new FirefoxDriver();
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.navigate().to(exoplanetCatalog);
+		driver.findElement(showAllResults).click();
+		driver.findElement(searchTextFieldLocator).clear();
+		driver.findElement(searchTextFieldLocator).sendKeys(searchText);
+		proceedWhenVisible(driver, 15);
+		return exoplanetWebData = driver.findElements(webDataLocator);
+	}
+
 	private String getParameter(List<WebElement> list, int position) {
 		String elementData = "";
 		String noData = "—";
@@ -101,6 +101,12 @@ public class ExoplanetPage implements IExoplanetPage {
 	}
 
 	private void proceedWhenVisible(WebDriver driver, int timeout) {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String planetCount = "";
 		String planetCountInText = driver.findElement(planetCountLocator).getText();
 		if (planetCountInText.startsWith("Showing ")) {
@@ -112,7 +118,7 @@ public class ExoplanetPage implements IExoplanetPage {
 				}
 			}
 		}
-		String xpath = "//tr[" + planetCount + "]//td["+numOfPlanetParameters.toString()+"]";
+		String xpath = "//tr[" + planetCount + "]//td[" + numOfPlanetParameters.toString() + "]";
 		By lastWebElementLocator = By.xpath(xpath);
 		WebDriverWait wait = new WebDriverWait(driver, timeout);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(lastWebElementLocator));

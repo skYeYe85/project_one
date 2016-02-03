@@ -1,17 +1,10 @@
 package com.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public abstract class AbstractDaoManager {
 	
-    /**
-     * Object ConnectionManager which could be used in all the DAOs
-     */
-    protected ConnectionManager cm = new ConnectionManager();
-    protected Connection connection = cm.openConnection();
-
     /**
      * Object PreparedStatement which could be used in all the DAOs
      */

@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/jdbc
+	http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
+	<context:annotation-config></context:annotation-config>
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.h2.Driver"></property>
+		<property name="url" value="jdbc:h2:tcp://localhost/~/db"></property>
+		<property name="username" value="sa"></property>
+	</bean>
+
+	<!-- DAOs -->
+	<bean id="exoplanetDao" class="com.dao.ExoplanetDao"></bean>
+
+	<!-- Services -->
+	<bean id="exoplanetService" class="com.service.ExoplanetService"></bean>
+	<bean id="exoplanetPage" class="com.service.ExoplanetPage"></bean>
+
+	<!-- Controllers -->
+	<bean id="exoplanetController" class="com.main.ExoplanetController"></bean>
 
 </beans>

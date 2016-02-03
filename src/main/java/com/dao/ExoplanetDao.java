@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import com.dto.Exoplanet;
 import com.exception.ExoplanetPersistenceException;
@@ -15,12 +17,14 @@ import com.exception.ExoplanetPersistenceException;
 public class ExoplanetDao extends AbstractDaoManager implements IExoplanetDao {
 	
 	protected static final Logger logger = LogManager.getLogger(ExoplanetDao.class);
+    @Autowired
+    private DriverManagerDataSource dataSource;
 
 	public Exoplanet create(Exoplanet e) throws ExoplanetPersistenceException {
 		checkExoplanetValidationDao(e);
 		sql = "INSERT INTO EXOPLANETS VALUES (NULL, ?,?,?,?,?,?,?,?,?,?);";
 		try {
-			ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			ps = dataSource.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			setExoplanet(e);
             ps.executeUpdate();
             rs = ps.getGeneratedKeys();
@@ -41,7 +45,7 @@ public class ExoplanetDao extends AbstractDaoManager implements IExoplanetDao {
 		Exoplanet e = null;
 		sql = "SELECT * FROM EXOPLANETS WHERE ID = ?";
 		try {
-			ps = connection.prepareStatement(sql);
+			ps = dataSource.getConnection().prepareStatement(sql);
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
 			while(rs.next()){
@@ -61,7 +65,7 @@ public class ExoplanetDao extends AbstractDaoManager implements IExoplanetDao {
 				+ "ASTROEINHEIT = ?, EXZENTRIZITAET = ?, BAHNNEIGUNG = ?, WINKELABSTAND = ?,"
 				+ "ENTDECKUNG = ?, AKTUALISIERUNG = ? WHERE ID = ?";
 		try {
-			ps = connection.prepareStatement(sql);
+			ps = dataSource.getConnection().prepareStatement(sql);
 			setExoplanet(e);
 			ps.setInt(11, e.getId());
 			ps.executeUpdate();
@@ -75,7 +79,7 @@ public class ExoplanetDao extends AbstractDaoManager implements IExoplanetDao {
 		checkExoplanetValidationDao(e);
 		sql = "DELETE FROM EXOPLANETS WHERE ID = ?";
 		try {
-			ps = connection.prepareStatement(sql);
+			ps = dataSource.getConnection().prepareStatement(sql);
 			ps.setInt(1, e.getId());
 			ps.executeUpdate();
 		} catch (SQLException se) {
@@ -87,7 +91,7 @@ public class ExoplanetDao extends AbstractDaoManager implements IExoplanetDao {
 		List<Exoplanet> elist = new ArrayList<Exoplanet>();
 		sql = "SELECT * FROM EXOPLANETS";
 		try {
-			ps = connection.prepareStatement(sql);
+			ps = dataSource.getConnection().prepareStatement(sql);
 			rs = ps.executeQuery();
 			while(rs.next()){
 				Exoplanet e = getExoplanet(rs);

@@ -35,6 +35,7 @@ public class ExoplanetController {
 		
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("Test.fxml"));
 //        loader.setControllerFactory(new Callback<Class<?>, Object>() {
+//        	@Override
 //            public Object call(Class<?> clazz) {
 //                return main.getCtx().getBean(clazz);
 //            }

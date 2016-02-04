@@ -7,18 +7,28 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.3</version>
 				<configuration>
-					<source />
-					<target />
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/java/com/main</directory>
+				<targetPath>gui</targetPath>
+				<includes>
+					<include>**/*.fxml</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 
 	<properties>
-	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<log4j.version>2.5</log4j.version>
 		<h2.version>1.4.191</h2.version>
 		<junit.version>4.12</junit.version>

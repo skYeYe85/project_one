@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry including="**/*.java" kind="src" path="src/main/java"/>
+	<classpathentry including="**/*.java" kind="src" output="target/classes" path="src/main/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="src" path="src/main/testing"/>
-	<classpathentry excluding="**/*.java" kind="src" path="src/main/resources"/>
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar" sourcepath="M2_REPO/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0-sources.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/org/apache/logging/log4j/log4j-core/2.5/log4j-core-2.5.jar" sourcepath="M2_REPO/org/apache/logging/log4j/log4j-core/2.5/log4j-core-2.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/logging/log4j/log4j-api/2.5/log4j-api-2.5.jar" sourcepath="M2_REPO/org/apache/logging/log4j/log4j-api/2.5/log4j-api-2.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/logging/log4j/log4j-slf4j-impl/2.5/log4j-slf4j-impl-2.5.jar" sourcepath="M2_REPO/org/apache/logging/log4j/log4j-slf4j-impl/2.5/log4j-slf4j-impl-2.5-sources.jar"/>
@@ -72,5 +81,16 @@
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-tx/4.2.4.RELEASE/spring-tx-4.2.4.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-tx/4.2.4.RELEASE/spring-tx-4.2.4.RELEASE-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-jdbc/4.2.4.RELEASE/spring-jdbc-4.2.4.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-jdbc/4.2.4.RELEASE/spring-jdbc-4.2.4.RELEASE-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-test/4.2.4.RELEASE/spring-test-4.2.4.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-test/4.2.4.RELEASE/spring-test-4.2.4.RELEASE-sources.jar"/>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

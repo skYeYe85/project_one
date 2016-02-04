@@ -24,12 +24,11 @@ public class Main extends Application {
 		logger.info("HelloWorld");
 	}
 
-	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.mainStage = primaryStage;
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("exoplanet.fxml"));
-		Parent root = loader.load();
         loader.setControllerFactory(new Callback<Class<?>, Object>() {
+        	@Override
             public Object call(Class<?> clazz) {
                 return ctx.getBean(clazz);
             }
@@ -37,6 +36,7 @@ public class Main extends Application {
 //		BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("exoplanet.fxml"));
 //		Scene scene = new Scene(root, 400, 400);
 //		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        Parent root = loader.load();
 		primaryStage.setScene(new Scene(root, 400, 400));
 		primaryStage.setTitle("EXOPLANETMANAGER");
 		primaryStage.show();

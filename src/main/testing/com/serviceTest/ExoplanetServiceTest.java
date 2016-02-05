@@ -16,16 +16,14 @@ public class ExoplanetServiceTest extends AbstractServiceTest {
 	
 	@Before
 	public void setUp() throws ParseException {
-		parsed = format.parse("20110210");
-	    sql = new java.sql.Date(parsed.getTime());
+		date = new java.sql.Date(0);
 		exoplanet = new Exoplanet(null, "Gliese 876 d", 0.017, 0.0, 1.94, 0.02080665,
-				0.081,50.0, 0.004427, 2005, sql);
+				0.081,50.0, 0.004427, 2005, date);
 	}
 	
 	@After
 	public void tearDown(){
-		parsed = null;
-		sql = null;
+		date = null;
 		exoplanet = null;
 	}
 	

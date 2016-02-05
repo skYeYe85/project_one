@@ -13,14 +13,18 @@
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="org.h2.Driver"></property>
-		<property name="url" value="jdbc:h2:tcp://localhost/~/db"></property>
+		<property name="url" value="jdbc:h2:tcp://localhost/~/testdb"></property>
 		<property name="username" value="sa"></property>
+		<property name="password" value="test" />
 	</bean>
 
 	<jdbc:initialize-database data-source="dataSource"
 		enabled="true" ignore-failures="ALL">
+		<jdbc:script location="classpath:com/main/deleteAllTables.sql" execution="INIT"></jdbc:script>
 		<jdbc:script location="classpath:com/main/createTableExoplanets.sql"
 			execution="INIT"></jdbc:script>
+		<jdbc:script location="classpath:com/main/insertExoplanets.sql" execution="INIT"></jdbc:script>
+		<!--<jdbc:script location="classpath:delete.sql" execution="DESTROY"></jdbc:script> -->
 	</jdbc:initialize-database>
 
 	<!-- DAOs -->

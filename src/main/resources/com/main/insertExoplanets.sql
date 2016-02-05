@@ -1,0 +1,33 @@
+INSERT
+    INTO
+        EXOPLANETS
+    VALUES(
+        NULL,
+        'PlanetA',
+        1.1,
+        1.1,
+        1.1,
+        1.1,
+        1.1,
+        1.1,
+        1.1,
+        2000,
+        '2016-01-01'
+    );
+
+INSERT
+    INTO
+        EXOPLANETS
+    VALUES(
+        NULL,
+        'PlanetB',
+        2.1,
+        2.1,
+        2.1,
+        2.1,
+        2.1,
+        2.1,
+        2.1,
+        2000,
+        '2016-01-02'
+    );

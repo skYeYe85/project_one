@@ -1,9 +1,7 @@
 package com.service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -37,9 +35,6 @@ public class ExoplanetPage implements IExoplanetPage {
 		exoplanetList = new ArrayList<Exoplanet>();
 		Double parameter; // all-Planet-Double Parameters
 		Integer entdeckung;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date parsed;
-		java.sql.Date aktualisierung;
 		for (int i = 0; i < exoplanetWebData.size(); i += numOfPlanetParameters) {
 			Exoplanet e = new Exoplanet();
 			e.setPlanet(getParameter(exoplanetWebData, i)); // Planet
@@ -59,9 +54,7 @@ public class ExoplanetPage implements IExoplanetPage {
 			e.setWinkelabstand(parameter);
 			entdeckung = Integer.parseInt(getParameter(exoplanetWebData, i + 8)); // Entdeckung
 			e.setEntdeckung(entdeckung);
-			parsed = sdf.parse(exoplanetWebData.get(i + 9).getText());
-			aktualisierung = new java.sql.Date(parsed.getTime());
-			e.setAktualisierung(aktualisierung);
+			e.setAktualisierung(e.convertToSqlDate(exoplanetWebData.get(i + 9).getText())); // Aktualisierungsdatum
 			exoplanetList.add(e);
 		}
 		return exoplanetList;
@@ -70,6 +63,7 @@ public class ExoplanetPage implements IExoplanetPage {
 	private List<WebElement> exoplanetListSearch(String searchText) {
 		exoplanetWebData = new ArrayList<WebElement>();
 		driver = new FirefoxDriver();
+//		driver = new HtmlUnitDriver();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.navigate().to(exoplanetCatalog);
 		driver.findElement(showAllResults).click();
@@ -81,7 +75,7 @@ public class ExoplanetPage implements IExoplanetPage {
 
 	private String getParameter(List<WebElement> list, int position) {
 		String elementData = "";
-		String noData = "—";
+		String noData = "â€”";
 		if (position % numOfPlanetParameters == 0) {
 			elementData = list.get(position).getText();
 		} else if (position % numOfPlanetParameters < 8 || position % numOfPlanetParameters > 0) {

@@ -1,8 +1,5 @@
 package com.daoTest;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
@@ -13,14 +10,11 @@ import com.dao.IExoplanetDao;
 import com.dto.Exoplanet;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring.xml" })
+@ContextConfiguration(locations = { "classpath:spring-test.xml" })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public abstract class AbstractDaoTest {
 	protected Exoplanet exoplanet;
-	SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-	Date parsed;
-	java.sql.Date sql;
-
+	protected java.sql.Date date;
 	@Autowired
 	protected IExoplanetDao exoplanetDao;
 }

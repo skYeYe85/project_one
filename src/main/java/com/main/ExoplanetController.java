@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 public class ExoplanetController {
 
 	private static final Logger logger = LogManager.getLogger(ExoplanetController.class);
+	private Exoplanet e;
 	private Stage mainStage;
 	private Main main;
 	private double defaultHeight;
@@ -58,19 +59,6 @@ public class ExoplanetController {
 //            logger.error("Reading the necessary file failed: " + e);
 //            e.printStackTrace();
 //        }
-		
-		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-		Date parsed = format.parse("20110210");;
-		java.sql.Date sql = new java.sql.Date(parsed.getTime());
-		Exoplanet e = new Exoplanet(null, "Gliese 876 d", 0.017, 0.0, 1.94, 0.02080665,
-				0.081,50.0, 0.004427, 2005, sql);
-		
-		try {
-			e = exoplanetService.create(e);
-		} catch (ExoplanetServiceException ese) {
-			// TODO Auto-generated catch block
-			ese.printStackTrace();
-		}
 
 		List<Exoplanet> list;
 		list = exoplanetPage.exoplanetSearchList("Gliese");

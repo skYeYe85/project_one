@@ -89,5 +89,6 @@ public class ExoplanetService implements IExoplanetService {
 		if(e.getWinkelabstand() < 0) throw new ExoplanetServiceException();
 		if(e.getEntdeckung() < 0) throw new ExoplanetServiceException();
 		//if(e.getAktualisierung() < 0) throw new ExoplanetServiceException();
+		//checkDate()... Method in Servicelayer
 	}
 }

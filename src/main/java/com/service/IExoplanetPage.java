@@ -7,5 +7,6 @@ import com.dto.Exoplanet;
 
 public interface IExoplanetPage {
 
-	public List<Exoplanet> exoplanetSearchList(String searchText) throws ParseException;
+	public List<Exoplanet> exoplanetListAll() throws ParseException;
+	public List<Exoplanet> exoplanetByName(String exoplanetName) throws ParseException;
 }

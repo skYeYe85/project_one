@@ -61,7 +61,7 @@ public class ExoplanetController {
 //        }
 
 		List<Exoplanet> list;
-		list = exoplanetPage.exoplanetSearchList("Gliese");
+		list = exoplanetPage.exoplanetByName("Gliese");
 		for (int i = 0; i < list.size(); i++) {
 			try {
 				e = exoplanetService.create(list.get(i));

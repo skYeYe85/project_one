@@ -14,7 +14,6 @@ import com.dto.Exoplanet;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public abstract class AbstractDaoTest {
 	protected Exoplanet exoplanet;
-	protected java.sql.Date date;
 	@Autowired
 	protected IExoplanetDao exoplanetDao;
 }

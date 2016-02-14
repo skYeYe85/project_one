@@ -1,6 +1,5 @@
 package com.service;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -11,7 +10,6 @@ import org.openqa.jetty.log.LogFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -31,20 +29,23 @@ public class ExoplanetPage implements IExoplanetPage {
 	private static final By planetCountLocator = By.xpath("/html/body/div[2]/div[2]/p/span[2]");
 	private static final By filterButtonLocator = By.xpath("/html/body/div[2]/div[2]/div[2]/form/div[3]/input");
 	private static final By webDataLocator = By.xpath("//td");
+	// private static final By processingLocator =
+	// By.xpath("/html/body/div[2]/div[2]/div[3]/div/div[5]");
+	private static final By processingLocator = By.id("data_processing");
 
-	public List<Exoplanet> exoplanetListAll() throws ParseException {
-		this.exoplanetWebData = exoplanetListSearch("");
+	public List<Exoplanet> exoplanetListAll() {
+		exoplanetWebData = exoplanetListSearch("");
 		return exoplanetList(exoplanetWebData);
 	}
 
-	public List<Exoplanet> exoplanetByName(String exoplanetName) throws ParseException {
-		String searchString = "\""+exoplanetName+" \" in name";
-		this.exoplanetWebData = exoplanetListSearch(searchString);
+	public List<Exoplanet> exoplanetByName(String exoplanetName) {
+		String searchString = "\"" + exoplanetName + "\" in name";
+		exoplanetWebData = exoplanetListSearch(searchString);
 		return exoplanetList(exoplanetWebData);
 	}
 
-	private List<Exoplanet> exoplanetList(List<WebElement> exoplanetWebData) throws ParseException {
-		this.exoplanetList = new ArrayList<Exoplanet>();
+	private List<Exoplanet> exoplanetList(List<WebElement> exoplanetWebData) {
+		exoplanetList = new ArrayList<Exoplanet>();
 		Double parameter; // all-Planet-Double Parameters
 		Integer entdeckung;
 		for (int i = 0; i < exoplanetWebData.size(); i += numOfPlanetParameters) {
@@ -66,8 +67,8 @@ public class ExoplanetPage implements IExoplanetPage {
 			e.setWinkelabstand(parameter);
 			entdeckung = Integer.parseInt(getParameter(exoplanetWebData, i + 8)); // Entdeckung
 			e.setEntdeckung(entdeckung);
-			e.setAktualisierung(e.convertToSqlDate(exoplanetWebData.get(i + 9).getText())); // Aktualisierungsdatum
-			this.exoplanetList.add(e);
+			e.setAktualisierung(getParameter(exoplanetWebData, i + 9)); // Aktualisierungsdatum
+			exoplanetList.add(e);
 		}
 		return exoplanetList;
 	}
@@ -75,23 +76,24 @@ public class ExoplanetPage implements IExoplanetPage {
 	private List<WebElement> exoplanetListSearch(String queryText) {
 		exoplanetWebData = new ArrayList<WebElement>();
 		ignoreLogging();
-//		driver = new FirefoxDriver();
+		// driver = new FirefoxDriver();
 		driver = new HtmlUnitDriver();
 		((HtmlUnitDriver) driver).setJavascriptEnabled(true);
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.navigate().to(exoplanetCatalog);
-		WebElement dropDownListBox = driver.findElement(selectResultsLocator);
-		Select clickThis = new Select(dropDownListBox);
-		clickThis.selectByVisibleText("All");
-		if (queryText.equals("")) {
-			proceedWhenVisible(driver, 15);
-			return this.exoplanetWebData = driver.findElements(webDataLocator);
-		}
+		WebDriverWait wait = new WebDriverWait(driver, 15);
 		driver.findElement(filterTextFieldLocator).clear();
 		driver.findElement(filterTextFieldLocator).sendKeys(queryText);
 		driver.findElement(filterButtonLocator).click();
-		proceedWhenVisible(driver, 15);
-		return this.exoplanetWebData = driver.findElements(webDataLocator);
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(processingLocator));
+		WebElement dropDownListBox = driver.findElement(selectResultsLocator);
+		Select clickThis = new Select(dropDownListBox);
+		clickThis.selectByVisibleText("All");
+		// wait.until(ExpectedConditions.invisibilityOfElementLocated(processingLocator));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(proceedWhenVisible(driver)));
+		exoplanetWebData = driver.findElements(webDataLocator);
+		// driver.close();
+		return exoplanetWebData;
 	}
 
 	private String getParameter(List<WebElement> list, int position) {
@@ -115,13 +117,7 @@ public class ExoplanetPage implements IExoplanetPage {
 		return elementData;
 	}
 
-	private void proceedWhenVisible(WebDriver driver, int timeout) {
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	private By proceedWhenVisible(WebDriver driver) {
 		String planetCount = "";
 		String planetCountInText = driver.findElement(planetCountLocator).getText();
 		if (planetCountInText.startsWith("Showing ")) {
@@ -134,9 +130,7 @@ public class ExoplanetPage implements IExoplanetPage {
 			}
 		}
 		String xpath = "//tr[" + planetCount + "]//td[" + numOfPlanetParameters.toString() + "]";
-		By lastWebElementLocator = By.xpath(xpath);
-		WebDriverWait wait = new WebDriverWait(driver, timeout);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(lastWebElementLocator));
+		return By.xpath(xpath);
 	}
 
 	private void ignoreLogging() {
@@ -146,8 +140,8 @@ public class ExoplanetPage implements IExoplanetPage {
 		Logger.getLogger("org.apache.http").setLevel(Level.OFF);
 		LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log",
 				"org.apache.commons.logging.impl.NoOpLog");
-//		if (!driver.toString().contains("(null)")) {
-//			driver.close();
-//		}
+		// if (!driver.toString().contains("(null)")) {
+		// driver.close();
+		// }
 	}
 }

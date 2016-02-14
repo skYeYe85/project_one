@@ -1,9 +1,5 @@
 package com.dto;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class Exoplanet {
 	
 	private Integer id;
@@ -16,15 +12,13 @@ public class Exoplanet {
 	private Double bahnneigung;
 	private Double winkelabstand;
 	private Integer entdeckung;
-	private java.sql.Date aktualisierung;
-	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	private Date parsed;
+	private String aktualisierung;
 	
 	public Exoplanet(){}
 	
 	public Exoplanet(Integer id, String planet, Double masse, Double radius, Double periode,
 			Double astroEinheit, Double exzentrizitaet, Double bahnneigung,
-			Double winkelabstand, Integer entdeckung, java.sql.Date aktualisierung){
+			Double winkelabstand, Integer entdeckung, String aktualisierung){
 		this.id = id;
 		this.planet = planet;
 		this.masse = masse;
@@ -92,10 +86,10 @@ public class Exoplanet {
 	public void setEntdeckung(Integer entdeckung) {
 		this.entdeckung = entdeckung;
 	}
-	public java.sql.Date getAktualisierung() {
+	public String getAktualisierung() {
 		return aktualisierung;
 	}
-	public void setAktualisierung(java.sql.Date aktualisierung) {
+	public void setAktualisierung(String aktualisierung) {
 		this.aktualisierung = aktualisierung;
 	}
 	public String getPlanet() {
@@ -103,11 +97,6 @@ public class Exoplanet {
 	}
 	public void setPlanet(String planet) {
 		this.planet = planet;
-	}
-	
-	public java.sql.Date convertToSqlDate(String date) throws ParseException{
-		parsed = sdf.parse(date);
-		return this.aktualisierung = new java.sql.Date(parsed.getTime());
 	}
 
 	@Override

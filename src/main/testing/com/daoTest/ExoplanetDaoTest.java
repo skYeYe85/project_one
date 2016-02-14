@@ -4,8 +4,6 @@ package com.daoTest;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-import java.text.ParseException;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,16 +14,14 @@ import com.exception.ExoplanetPersistenceException;
 public class ExoplanetDaoTest extends AbstractDaoTest {
 	
 	@Before
-	public void setUp() throws ParseException {
+	public void setUp() {
 		exoplanet = new Exoplanet();
-		date = new java.sql.Date(0);
 		exoplanet = new Exoplanet(null, "Gliese 876 d", 0.017, 0.0, 1.94, 0.02080665,
-				0.081,50.0, 0.004427, 2005, date);
+				0.081,50.0, 0.004427, 2005, "2010-01-01");
 	}
 	
 	@After
 	public void tearDown(){
-		date = null;
 		exoplanet = null;
 	}
 	

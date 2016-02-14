@@ -7,6 +7,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.dto.Exoplanet;
+import com.service.IExoplanetPage;
 import com.service.IExoplanetService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -14,7 +15,8 @@ import com.service.IExoplanetService;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public abstract class AbstractServiceTest {
 	protected Exoplanet exoplanet;
-	protected java.sql.Date date;
 	@Autowired
 	protected IExoplanetService exoplanetService;
+	@Autowired
+	protected IExoplanetPage exoplanetPage;
 }

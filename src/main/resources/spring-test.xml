@@ -20,10 +20,12 @@
 
 	<jdbc:initialize-database data-source="dataSource"
 		enabled="true" ignore-failures="ALL">
-		<jdbc:script location="classpath:com/main/deleteAllTables.sql" execution="INIT"></jdbc:script>
+		<jdbc:script location="classpath:com/main/deleteAllTables.sql"
+			execution="INIT"></jdbc:script>
 		<jdbc:script location="classpath:com/main/createTableExoplanets.sql"
 			execution="INIT"></jdbc:script>
-		<jdbc:script location="classpath:com/main/insertExoplanets.sql" execution="INIT"></jdbc:script>
+		<jdbc:script location="classpath:com/main/insertExoplanets.sql"
+			execution="INIT"></jdbc:script>
 		<!--<jdbc:script location="classpath:delete.sql" execution="DESTROY"></jdbc:script> -->
 	</jdbc:initialize-database>
 

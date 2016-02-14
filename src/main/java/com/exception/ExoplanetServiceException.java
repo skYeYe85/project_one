@@ -1,7 +1,7 @@
 package com.exception;
 
 public class ExoplanetServiceException extends Exception {
-	
+
 	/**
 	 * 
 	 */

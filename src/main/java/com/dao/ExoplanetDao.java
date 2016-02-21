@@ -59,6 +59,25 @@ public class ExoplanetDao extends AbstractDaoManager implements IExoplanetDao {
 		checkExoplanetValidationDao(e);
 		return e;
 	}
+	
+	public Exoplanet readByName(String planet) throws ExoplanetPersistenceException {
+		if (planet == null)
+			throw new IllegalArgumentException("Exoplanetname cannot be null");
+		Exoplanet e = null;
+		sql = "SELECT * FROM EXOPLANETS WHERE PLANET = ?";
+		try {
+			ps = dataSource.getConnection().prepareStatement(sql);
+			ps.setString(1, planet);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				e = getExoplanet(rs);
+			}
+		} catch (SQLException se) {
+			daoExceptionHandling(se);
+		}
+		checkExoplanetValidationDao(e);
+		return e;
+	}
 
 	public void update(Exoplanet e) throws ExoplanetPersistenceException {
 		if (e.getId() == null)

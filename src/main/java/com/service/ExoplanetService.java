@@ -35,6 +35,17 @@ public class ExoplanetService implements IExoplanetService {
 	public Exoplanet read(Integer id) throws ExoplanetServiceException {
 		return exoplanetExists(id);
 	}
+	
+	public Exoplanet readByName(String planet) throws ExoplanetServiceException {
+		Exoplanet e = null;
+		try {
+			e = exoplanetDao.readByName(planet);
+		} catch (ExoplanetPersistenceException epe) {
+			serviceExceptionHandling(epe);
+		}
+		checkExoplanetValidationService(e);
+		return e;
+	}
 
 	public void update(Exoplanet e) throws ExoplanetServiceException {
 		exoplanetExists(e.getId());

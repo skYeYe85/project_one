@@ -88,6 +88,14 @@ public class ExoplanetController extends DialogManager implements Initializable 
 				.addListener((observable, oldValue, newValue) -> showExoplanetDetails(newValue));
 	}
 
+	private void refreshTable() throws ExoplanetServiceException {
+		exoplanetList = exoplanetService.listAllExoplanets();
+		this.oExoplanetList.removeAll(oExoplanetList);
+		for (int i = 0; i < exoplanetList.size(); i++) {
+			oExoplanetList.add(exoplanetList.get(i));
+		}
+	}
+
 	private void showExoplanetDetails(Exoplanet exoplanet) {
 		if (exoplanet != null) {
 			labelMasse.setText(exoplanet.getMasse().toString());
@@ -130,7 +138,8 @@ public class ExoplanetController extends DialogManager implements Initializable 
 		ProgressDialog progDiag = new ProgressDialog(service);
 		progDiag.setTitle("Retrieving Exoplanetdata in Progress");
 		progDiag.initOwner(getMainStage());
-		progDiag.setHeaderText("Waiting for import of exoplanet data. For more information visit http://exoplanet.eu/catalog");
+		progDiag.setHeaderText(
+				"Waiting for import of exoplanet data. For more information visit http://exoplanet.eu/catalog");
 		progDiag.initModality(Modality.WINDOW_MODAL);
 		service.start();
 	}
@@ -158,7 +167,18 @@ public class ExoplanetController extends DialogManager implements Initializable 
 	@FXML
 	public void onUpdateButton() {
 		logger.info("ExoplanetController - onUpdateButton");
-		createInformationDialog("UpdateNotImplemented", null, "Update of Exoplanet still not Implemented.");
+		exoplanet = exoplanetTable.getSelectionModel().getSelectedItem();
+		try {
+			int dbid = exoplanet.getId();
+			exoplanet = exoplanetPage.exoplanetByName(exoplanet.getPlanet()).get(0);
+			exoplanet.setId(dbid);
+			exoplanetService.update(exoplanet);
+			refreshTable();
+		} catch (ExoplanetServiceException ese) {
+			logger.error(ese.getMessage());
+		}
+		// createInformationDialog("UpdateNotImplemented", null, "Update of
+		// Exoplanet still not Implemented.");
 	}
 
 	@FXML

@@ -9,6 +9,8 @@ public interface IExoplanetDao {
 	public Exoplanet create(Exoplanet e) throws ExoplanetPersistenceException;
 
 	public Exoplanet read(Integer id) throws ExoplanetPersistenceException;
+	
+	public Exoplanet readByName(String planet) throws ExoplanetPersistenceException;
 
 	public void update(Exoplanet e) throws ExoplanetPersistenceException;
 

@@ -9,6 +9,8 @@ public interface IExoplanetService {
 	public Exoplanet create(Exoplanet e) throws ExoplanetServiceException;
 
 	public Exoplanet read(Integer id) throws ExoplanetServiceException;
+	
+	public Exoplanet readByName(String planet) throws ExoplanetServiceException;
 
 	public void update(Exoplanet e) throws ExoplanetServiceException;
 

@@ -6,16 +6,22 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.transform.TransformerException;
+
 import org.openqa.jetty.log.LogFactory;
 import org.openqa.selenium.By;
+import org.openqa.selenium.InvalidSelectorException;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.Wait;
 
 import com.dto.Exoplanet;
+import com.exception.ExoplanetServiceException;
+import com.google.common.base.Function;
 
 public class ExoplanetPage implements IExoplanetPage {
 
@@ -29,22 +35,19 @@ public class ExoplanetPage implements IExoplanetPage {
 	private static final By planetCountLocator = By.xpath("/html/body/div[2]/div[2]/p/span[2]");
 	private static final By filterButtonLocator = By.xpath("/html/body/div[2]/div[2]/div[2]/form/div[3]/input");
 	private static final By webDataLocator = By.xpath("//td");
-	// private static final By processingLocator =
-	// By.xpath("/html/body/div[2]/div[2]/div[3]/div/div[5]");
-	private static final By processingLocator = By.id("data_processing");
 
-	public List<Exoplanet> exoplanetListAll() {
+	public List<Exoplanet> exoplanetListAll() throws ExoplanetServiceException {
 		exoplanetWebData = exoplanetListSearch("");
 		return exoplanetList(exoplanetWebData);
 	}
 
-	public List<Exoplanet> exoplanetByName(String exoplanetName) {
+	public List<Exoplanet> exoplanetByName(String exoplanetName) throws ExoplanetServiceException {
 		String searchString = "\"" + exoplanetName + "\" in name";
 		exoplanetWebData = exoplanetListSearch(searchString);
 		return exoplanetList(exoplanetWebData);
 	}
 
-	private List<Exoplanet> exoplanetList(List<WebElement> exoplanetWebData) {
+	private List<Exoplanet> exoplanetList(List<WebElement> exoplanetWebData) throws ExoplanetServiceException {
 		exoplanetList = new ArrayList<Exoplanet>();
 		Double parameter; // all-Planet-Double Parameters
 		Integer entdeckung;
@@ -79,27 +82,23 @@ public class ExoplanetPage implements IExoplanetPage {
 		// driver = new FirefoxDriver();
 		driver = new HtmlUnitDriver();
 		((HtmlUnitDriver) driver).setJavascriptEnabled(true);
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		driver.navigate().to(exoplanetCatalog);
-		WebDriverWait wait = new WebDriverWait(driver, 15);
 		driver.findElement(filterTextFieldLocator).clear();
 		driver.findElement(filterTextFieldLocator).sendKeys(queryText);
 		driver.findElement(filterButtonLocator).click();
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(processingLocator));
 		WebElement dropDownListBox = driver.findElement(selectResultsLocator);
 		Select clickThis = new Select(dropDownListBox);
 		clickThis.selectByVisibleText("All");
-		// wait.until(ExpectedConditions.invisibilityOfElementLocated(processingLocator));
-		wait.until(ExpectedConditions.visibilityOfElementLocated(proceedWhenVisible(driver)));
+		waitForLastElement(driver);
 		exoplanetWebData = driver.findElements(webDataLocator);
-		// driver.close();
 		return exoplanetWebData;
 	}
 
-	private String getParameter(List<WebElement> list, int position) {
+	private String getParameter(List<WebElement> list, int position) throws ExoplanetServiceException {
 		String elementData = "";
 		String noData = "—";
-		if (position % numOfPlanetParameters == 0) {
+		if (position % numOfPlanetParameters == 0 || position % numOfPlanetParameters == 9) {
 			elementData = list.get(position).getText();
 		} else if (position % numOfPlanetParameters < 8 || position % numOfPlanetParameters > 0) {
 			elementData = list.get(position).getText();
@@ -109,15 +108,26 @@ public class ExoplanetPage implements IExoplanetPage {
 			elementData = list.get(position).getText();
 			if (elementData.equals(noData))
 				elementData = "0";
-		} else if (position % numOfPlanetParameters == 9) {
-			// Datumsformat testen... ToDo ExoplanetPageException
 		} else {
-			// logger.info("something went wrong");
+			throw new ExoplanetServiceException(); // wrong number of parameter
 		}
 		return elementData;
 	}
 
-	private By proceedWhenVisible(WebDriver driver) {
+	private void waitForLastElement(WebDriver driver) {
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(30, TimeUnit.SECONDS)
+				.pollingEvery(5, TimeUnit.SECONDS).ignoring(NoSuchElementException.class)
+				.ignoring(RuntimeException.class).ignoring(TransformerException.class)
+				.ignoring(InvalidSelectorException.class);
+		@SuppressWarnings("unused")
+		WebElement foo = wait.until(new Function<WebDriver, WebElement>() {
+			public WebElement apply(WebDriver driver) {
+				return proceedWhenVisible(driver);
+			}
+		});
+	}
+
+	private WebElement proceedWhenVisible(WebDriver driver) {
 		String planetCount = "";
 		String planetCountInText = driver.findElement(planetCountLocator).getText();
 		if (planetCountInText.startsWith("Showing ")) {
@@ -130,7 +140,7 @@ public class ExoplanetPage implements IExoplanetPage {
 			}
 		}
 		String xpath = "//tr[" + planetCount + "]//td[" + numOfPlanetParameters.toString() + "]";
-		return By.xpath(xpath);
+		return driver.findElement(By.xpath(xpath));
 	}
 
 	private void ignoreLogging() {
@@ -140,8 +150,5 @@ public class ExoplanetPage implements IExoplanetPage {
 		Logger.getLogger("org.apache.http").setLevel(Level.OFF);
 		LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log",
 				"org.apache.commons.logging.impl.NoOpLog");
-		// if (!driver.toString().contains("(null)")) {
-		// driver.close();
-		// }
 	}
 }

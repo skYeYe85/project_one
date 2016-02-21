@@ -9,12 +9,13 @@ github - http://download.eclipse.org/egit/updates
 maven - http://download.eclipse.org/technology/m2e/releases
 spring - http://dist.springsource.com/release/TOOLS/update/e4.5/ (first time error, second time no error)
 
-
-Now5: Assure not to make double data in db (readbyname?)
+Now1: testing selenium (not working properly) - waitmethods
+Now2: Assure not to make double data in db (readbyname?)
 
 -ToDoList
 -Implement Test for Pageobject (separate Database for testing with spring)
 -Date for last time upload - implemented - should match the newest update-date of a planet
+-Sorting by every variable
 -Util-class for directories, files etc for conversion
 -XML-XSD/DOM/SAX wh implementation (some kind of... eg representing a Planet in an xml-file)
 -XML-XSD validation

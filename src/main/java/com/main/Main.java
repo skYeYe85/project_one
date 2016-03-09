@@ -44,4 +44,8 @@ public class Main extends Application {
 	public static ApplicationContext getCtx() {
 		return ctx;
 	}
+
+	public static void loadDataBase() {
+
+	}
 }

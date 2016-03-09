@@ -9,6 +9,8 @@ import java.util.ResourceBundle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.controlsfx.dialog.ProgressDialog;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dto.Exoplanet;
@@ -33,6 +35,7 @@ import javafx.stage.Stage;
 public class ExoplanetController extends DialogManager implements Initializable {
 
 	private static final Logger logger = LogManager.getLogger(ExoplanetController.class);
+	private WebDriver driver;
 	private List<Exoplanet> exoplanetList;
 	private ObservableList<Exoplanet> oExoplanetList;
 	private Exoplanet exoplanet;
@@ -150,7 +153,9 @@ public class ExoplanetController extends DialogManager implements Initializable 
 			for (int i = 0; i < list.size(); i++) {
 				exoplanetService.delete(list.get(i));
 			}
-			list = exoplanetPage.exoplanetListAll();
+			driver = new HtmlUnitDriver();
+			((HtmlUnitDriver) driver).setJavascriptEnabled(true);
+			list = exoplanetPage.exoplanetListAll(driver);
 			for (int i = 0; i < list.size(); i++) {
 				exoplanetService.create(list.get(i));
 			}
@@ -170,7 +175,10 @@ public class ExoplanetController extends DialogManager implements Initializable 
 		exoplanet = exoplanetTable.getSelectionModel().getSelectedItem();
 		try {
 			int dbid = exoplanet.getId();
-			exoplanet = exoplanetPage.exoplanetByName(exoplanet.getPlanet()).get(0);
+			driver = new HtmlUnitDriver();
+			((HtmlUnitDriver) driver).setJavascriptEnabled(true);
+			exoplanet = exoplanetPage.exoplanetByName(driver, exoplanet.getPlanet()).get(0);
+			driver.close();
 			exoplanet.setId(dbid);
 			exoplanetService.update(exoplanet);
 			refreshTable();

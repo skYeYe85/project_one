@@ -14,7 +14,6 @@ import org.openqa.selenium.InvalidSelectorException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
@@ -27,7 +26,6 @@ public class ExoplanetPage implements IExoplanetPage {
 
 	private static final String exoplanetCatalog = "http://exoplanet.eu/catalog/";
 	private static final Integer numOfPlanetParameters = 10;
-	private WebDriver driver;
 	private List<WebElement> exoplanetWebData;
 	private List<Exoplanet> exoplanetList;
 	private static final By selectResultsLocator = By.xpath("/html/body/div[2]/div[2]/div[3]/div/div[3]/label/select");
@@ -36,14 +34,14 @@ public class ExoplanetPage implements IExoplanetPage {
 	private static final By filterButtonLocator = By.xpath("/html/body/div[2]/div[2]/div[2]/form/div[3]/input");
 	private static final By webDataLocator = By.xpath("//td");
 
-	public List<Exoplanet> exoplanetListAll() throws ExoplanetServiceException {
-		exoplanetWebData = exoplanetListSearch("");
+	public List<Exoplanet> exoplanetListAll(WebDriver driver) throws ExoplanetServiceException {
+		exoplanetWebData = exoplanetListSearch(driver, "");
 		return exoplanetList(exoplanetWebData);
 	}
 
-	public List<Exoplanet> exoplanetByName(String exoplanetName) throws ExoplanetServiceException {
+	public List<Exoplanet> exoplanetByName(WebDriver driver, String exoplanetName) throws ExoplanetServiceException {
 		String searchString = "\"" + exoplanetName + "\" in name";
-		exoplanetWebData = exoplanetListSearch(searchString);
+		exoplanetWebData = exoplanetListSearch(driver, searchString);
 		return exoplanetList(exoplanetWebData);
 	}
 
@@ -76,12 +74,12 @@ public class ExoplanetPage implements IExoplanetPage {
 		return exoplanetList;
 	}
 
-	private List<WebElement> exoplanetListSearch(String queryText) {
+	private List<WebElement> exoplanetListSearch(WebDriver driver, String queryText) {
 		exoplanetWebData = new ArrayList<WebElement>();
 		ignoreLogging();
 		// driver = new FirefoxDriver();
-		driver = new HtmlUnitDriver();
-		((HtmlUnitDriver) driver).setJavascriptEnabled(true);
+		// driver = new HtmlUnitDriver();
+		//((HtmlUnitDriver) driver).setJavascriptEnabled(true);
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		driver.navigate().to(exoplanetCatalog);
 		driver.findElement(filterTextFieldLocator).clear();

@@ -1,6 +1,7 @@
 package com.serviceTest;
 
 import org.junit.runner.RunWith;
+import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -15,6 +16,7 @@ import com.service.IExoplanetService;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public abstract class AbstractServiceTest {
 	protected Exoplanet exoplanet;
+	protected WebDriver driver;
 	@Autowired
 	protected IExoplanetService exoplanetService;
 	@Autowired
